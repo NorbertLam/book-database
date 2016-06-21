@@ -4,7 +4,7 @@ var mongoose =  require('mongoose');
 const MongoClient=require('mongodb').MongoClient;
 app=express();
 var prt=3000;
-var mongoUri='';
+var mongoUri='mongodb://Tester:seceEN035@ds051595.mlab.com:51595/books';
 var Book=require('./app/models/book');
 
 //Setup parser
