@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-const MongoClient=require('mongodb').MongoClient;
 app = express();
 var prt = 3000;
 var mongoUri = '';
@@ -15,19 +14,19 @@ app.use(bodyParser.json());
 mongoose.connect(mongoUri);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function(){
+db.once('open', function() {
 });
 
 //Router setup
 var router = express.Router();
 
-router.use(function(req, res, next){
+router.use(function(req, res, next) {
   console.log('Something');
   next(); //Go to next route
 });
 
 // Routes ending in /books
-router.get('/', function(req, res){
+router.get('/', function(req, res) {
   res.json({message: 'welcome it works'});
 });
 
@@ -42,8 +41,8 @@ router.route('/books') //Post and get book list
     book.currentPage = req.body.currentPage;
     book.totalPages = req.body.totalPages;
 
-    book.save((err)=>{
-        if(err){
+    book.save((err) => {
+        if(err) {
             res.send(err);
         }
         res.json({message: 'Book added'});
@@ -51,9 +50,9 @@ router.route('/books') //Post and get book list
     });
 })
 
-  .get((req, res)=>{
-    Book.find((err, books)=>{
-        if(err){
+  .get((req, res) => {
+    Book.find((err, books) => {
+        if(err) { 
             res.send(err);
         }
         res.json(books);
@@ -64,27 +63,27 @@ router.route('/books') //Post and get book list
 // Routes ending in /books/:book_id
 router.route('/books/:book_id')
     
-  .get((req, res)=>{ //Get book based on id
-    Book.findById(req.params.book_id, (err, book)=>{
-        if(err){
+  .get((req, res) => { //Get book based on id
+    Book.findById(req.params.book_id, (err, book) => {
+        if(err) {
             res.send(err);
         }
         res.json(book);
     });
 })
 
-  .delete((req, res)=>{ //Delete book
+  .delete((req, res) => { //Delete book
     Book.remove({
         _id: req.params.book_id
-    }, (err, book)=> {
+    }, (err, book) => {
         if(err) res.send(err);
          res.json({ message: 'Deleted book'});
     });
 })
 
-  .put((req, res)=> { //Edit book information
-    Book.findById(req.params.book_id, (err, book)=>{
-        if(err){
+  .put((req, res) => { //Edit book information
+    Book.findById(req.params.book_id, (err, book) => {
+        if(err) {
             res.send(err);
         }
 
@@ -93,8 +92,8 @@ router.route('/books/:book_id')
         book.currentPage = req.body.currentPage;
         book.totalPages = req.body.totalPages;
 
-        book.save((err)=>{
-            if(err){
+        book.save((err) => {
+            if(err) {
                 res.send(err);
             }
             res.json({message: 'Updated book'});
@@ -105,4 +104,4 @@ router.route('/books/:book_id')
 app.use('/api', router);
 
 app.listen(prt);
-console.log('listening: '+prt);
+console.log('listening: '+ prt);
